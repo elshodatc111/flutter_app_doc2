@@ -1,17 +1,22 @@
+import 'package:doc2/screen/home_page.dart';
 import 'package:doc2/screen/login/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final GetStorage storage = GetStorage();
+    String? token = storage.read('token');
     Future.delayed(const Duration(seconds: 5), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginPage()), // Navigate to LoginPage
-      );
+      if (token != null && token.isNotEmpty) {
+        Get.off(() => const HomePage());
+      } else {
+        Get.off(() => const LoginPage());
+      }
     });
 
     return Scaffold(

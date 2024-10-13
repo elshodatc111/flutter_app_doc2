@@ -1,5 +1,3 @@
-import 'package:doc2/screen/home_page.dart';
-import 'package:doc2/screen/login/login_page.dart';
 import 'package:doc2/screen/splash/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: 'My Doc two',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,

@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: Colors.blue,
             icon: Icon(Icons.people,color: Colors.grey,),
             label: 'RO\'YXAT',
-            activeIcon: Icon(Icons.bar_chart,color: Color(0xff8FAADC),),
+            activeIcon: Icon(Icons.people,color: Color(0xff8FAADC),),
           ),
         ],
       ),

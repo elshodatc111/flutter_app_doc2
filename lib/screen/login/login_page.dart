@@ -1,9 +1,64 @@
+import 'dart:convert';
 import 'package:doc2/screen/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart' as http;
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController guvohnomaController = TextEditingController();
+  final TextEditingController jetonController = TextEditingController();
+  final GetStorage storage = GetStorage();
+  bool isLoading = false;
+
+  Future<void> loginUser() async {
+    final String guvohnomaRaqami = guvohnomaController.text;
+    final String jetonRaqami = jetonController.text;
+
+    if (guvohnomaRaqami.isEmpty || jetonRaqami.isEmpty) {
+      Get.snackbar('Xato', 'Iltimos, barcha maydonlarni to\'ldiring.');
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final response = await http.post(
+        Uri.parse('https://edumeneger.uz/api/user/login'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'email': guvohnomaRaqami,
+          'password': jetonRaqami,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        final token = responseData['token'];
+        storage.write('token', responseData['token']);
+        print('Token: $token');
+
+        Get.to(() => const HomePage());
+      } else {
+        Get.snackbar('Xato', 'Login yoki parol noto\'g\'ri.');
+      }
+    } catch (error) {
+      Get.snackbar('Xato', 'Nimadir xato ketdi. Iltimos, qayta urinib ko\'ring.');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +124,7 @@ class LoginPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         TextFormField(
+                          controller: guvohnomaController,
                           style: const TextStyle(fontSize: 20),
                           decoration: InputDecoration(
                             hintText: '002863',
@@ -92,6 +148,7 @@ class LoginPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         TextFormField(
+                          controller: jetonController,
                           style: const TextStyle(fontSize: 20),
                           decoration: InputDecoration(
                             hintText: 'A-088007',
@@ -118,10 +175,12 @@ class LoginPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      onPressed: () {
-                        Get.to(() => const HomePage());
-                      },
-                      child: const Text(
+                      onPressed: isLoading ? null : loginUser,
+                      child: isLoading
+                          ? const CircularProgressIndicator(
+                        color: Colors.white,
+                      )
+                          : const Text(
                         'TIZIMGA KIRISH',
                         style: TextStyle(
                           fontSize: 20,
