@@ -1,4 +1,4 @@
-import 'package:doc2/screen/splash/splash_page.dart';
+import 'package:Search/screen/splash/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';

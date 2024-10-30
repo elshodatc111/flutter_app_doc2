@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:doc2/screen/home_page.dart';
+import 'package:Search/screen/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -19,8 +19,8 @@ class _LoginPageState extends State<LoginPage> {
   bool isLoading = false;
 
   Future<void> loginUser() async {
-    final String guvohnomaRaqami = guvohnomaController.text;
-    final String jetonRaqami = jetonController.text;
+    final String guvohnomaRaqami = guvohnomaController.text.trim();
+    final String jetonRaqami = jetonController.text.trim();
 
     if (guvohnomaRaqami.isEmpty || jetonRaqami.isEmpty) {
       Get.snackbar('Xato', 'Iltimos, barcha maydonlarni to\'ldiring.');
@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('https://edumeneger.uz/api/user/login'),
+        Uri.parse('https://cyberkarshi.uz/app/public/api/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'email': guvohnomaRaqami,
@@ -44,14 +44,14 @@ class _LoginPageState extends State<LoginPage> {
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         final token = responseData['token'];
-        storage.write('token', responseData['token']);
-        print('Token: $token');
-
+        storage.write('token', token);
         Get.to(() => const HomePage());
       } else {
-        Get.snackbar('Xato', 'Login yoki parol noto\'g\'ri.');
+        print('Server error: ${response.body}');
+        Get.snackbar('Xato', 'M\'lumotlar noto\'g\'ri.');
       }
     } catch (error) {
+      print('Error: $error');
       Get.snackbar('Xato', 'Nimadir xato ketdi. Iltimos, qayta urinib ko\'ring.');
     } finally {
       setState(() {
@@ -80,11 +80,6 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'assest/image/logo.png',
-                    height: 180,
-                    width: 180,
-                  ),
                   const SizedBox(height: 30),
                   const Text(
                     'TIZIMGA KIRISH UCHUN MA\'LUMOTLARINGIZNI KIRITING',

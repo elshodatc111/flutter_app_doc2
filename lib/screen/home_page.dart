@@ -1,13 +1,13 @@
-import 'package:doc2/screen/charts/charts_page.dart';
-import 'package:doc2/screen/list/list_page.dart';
-import 'package:doc2/screen/login/login_page.dart';
-import 'package:doc2/screen/splash/splash_page.dart';
+import 'package:Search/screen/charts/charts_page.dart';
+import 'package:Search/screen/list/list_page.dart';
+import 'package:Search/screen/login/login_page.dart';
+import 'package:Search/screen/splash/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -34,13 +34,13 @@ class _HomePageState extends State<HomePage> {
             _currentIndex = index;
           });
         },
-        items: const [
-          BottomNavigationBarItem(
+        items: const[
+           BottomNavigationBarItem(
             icon: Icon(Icons.bar_chart,color: Colors.grey,),
             label: 'STATISTIKA',
             activeIcon: Icon(Icons.bar_chart,color: Color(0xff8FAADC),),
           ),
-          BottomNavigationBarItem(
+           BottomNavigationBarItem(
             backgroundColor: Colors.blue,
             icon: Icon(Icons.people,color: Colors.grey,),
             label: 'RO\'YXAT',
