@@ -44,8 +44,15 @@ class _LoginPageState extends State<LoginPage> {
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         final token = responseData['token'];
+        final name = responseData['name'];
+        final number = responseData['number'];
+        final id = responseData['id'];
+        storage.write('id', id);
         storage.write('token', token);
-        Get.to(() => const HomePage());
+        storage.write('name', name);
+        storage.write('number', number);
+        //Get.to(() => const HomePage());
+        Get.offAll(() => const HomePage());
       } else {
         print('Server error: ${response.body}');
         Get.snackbar('Xato', 'M\'lumotlar noto\'g\'ri.');

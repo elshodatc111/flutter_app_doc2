@@ -1,10 +1,10 @@
-import 'package:Search/screen/charts/charts_page.dart';
+
+import 'package:Search/screen/child/child_page.dart';
 import 'package:Search/screen/list/list_page.dart';
-import 'package:Search/screen/login/login_page.dart';
-import 'package:Search/screen/splash/splash_page.dart';
+import 'package:Search/screen/profel/profel_page.dart';
+import 'package:Search/screen/save/save_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,8 +15,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   final List<Widget> _tabs = [
-    ChartsPage(),
     ListPage(),
+    SavePage(),
+    ChildPage(),
+    const ProfelPage()
   ];
   @override
   Widget build(BuildContext context) {
@@ -36,15 +38,28 @@ class _HomePageState extends State<HomePage> {
         },
         items: const[
            BottomNavigationBarItem(
-            icon: Icon(Icons.bar_chart,color: Colors.grey,),
-            label: 'STATISTIKA',
-            activeIcon: Icon(Icons.bar_chart,color: Color(0xff8FAADC),),
+             backgroundColor: Color(0xffEDD694),
+            icon: Icon(Icons.search),
+            label: 'Qidiruv',
+            activeIcon: Icon(Icons.search),
+           ),
+          BottomNavigationBarItem(
+            backgroundColor: Color(0xffEDD694),
+            icon: Icon(Icons.save),
+            label: 'Tanlangan',
+            activeIcon: Icon(Icons.save),
           ),
-           BottomNavigationBarItem(
-            backgroundColor: Colors.blue,
-            icon: Icon(Icons.people,color: Colors.grey,),
-            label: 'RO\'YXAT',
-            activeIcon: Icon(Icons.people,color: Color(0xff8FAADC),),
+          BottomNavigationBarItem(
+            backgroundColor: Color(0xffEDD694),
+            icon: Icon(Icons.child_care),
+            label: 'Yo\'qolganlar',
+            activeIcon: Icon(Icons.child_care),
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Color(0xffEDD694),
+            icon: Icon(Icons.person),
+            label: 'Profel',
+            activeIcon: Icon(Icons.person),
           ),
         ],
       ),
