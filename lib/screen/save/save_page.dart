@@ -36,7 +36,7 @@ class _SavePageState extends State<SavePage> {
       savedItems = updatedList;
     });
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Item deleted')),
+      const SnackBar(content: Text('O\'chirildi')),
     );
   }
 

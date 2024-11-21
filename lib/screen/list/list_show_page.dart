@@ -16,6 +16,8 @@ class ListShowPage extends StatefulWidget {
 class _ListShowPageState extends State<ListShowPage> {
   late Map<String, dynamic> itemDetails;
   bool isLoading = true;
+  bool isSubmitting = false;
+
   final GetStorage storage = GetStorage();
   final _phoneController = TextEditingController();
   final _messageController = TextEditingController();
@@ -188,8 +190,13 @@ class _ListShowPageState extends State<ListShowPage> {
                               ),
                               const SizedBox(height: 20),
                               ElevatedButton(
-                                onPressed: () async {
+                                onPressed: isSubmitting
+                                    ? null // Disable the button while submitting
+                                    : () async {
                                   if (_formKey.currentState!.validate()) {
+                                    setState(() {
+                                      isSubmitting = true; // Start loading
+                                    });
                                     String phone = _phoneController.text;
                                     String message = _messageController.text;
                                     final token = storage.read('token');
@@ -219,7 +226,7 @@ class _ListShowPageState extends State<ListShowPage> {
                                         _phoneController.clear();
                                         _messageController.clear();
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text('Xabar muvaffaqiyatli yuborildi')),
+                                          const SnackBar(content: Text('Xabar muvaffaqiyatli yuborildi')),
                                         );
                                         Navigator.pop(context); // Close the dialog
                                       } else {
@@ -231,6 +238,10 @@ class _ListShowPageState extends State<ListShowPage> {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(content: Text('Tarmoq xatosi: $e')),
                                       );
+                                    } finally {
+                                      setState(() {
+                                        isSubmitting = false; // Stop loading
+                                      });
                                     }
                                   }
                                 },
@@ -240,8 +251,18 @@ class _ListShowPageState extends State<ListShowPage> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                child: const Text('Xabarni yuborish'),
-                              )
+                                child: isSubmitting
+                                    ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                    strokeWidth: 2.0,
+                                  ),
+                                )
+                                    : const Text('Xabarni yuborish'),
+                              ),
+
                             ],
                           ),
                         ),

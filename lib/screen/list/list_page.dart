@@ -145,23 +145,29 @@ class _ListPageState extends State<ListPage> {
                   children: [
                     ElevatedButton(
                       onPressed: () async {
-                        List<Map<String, dynamic>> savedData = [];
-                        for (var item in searchResults) {
-                          Map<String, dynamic> itemData = {
-                            'id': item['id'],
-                            'name': item['name'],
-                            'fio': item['fio'],
-                            'substance': item['substance'],
-                            'address': item['address'],
-                            'photo': item['photo'],
-                            'type': item['type'],
-                          };
+                        Map<String, dynamic> itemData = {
+                          'id': item['id'],
+                          'name': item['name'],
+                          'fio': item['fio'],
+                          'substance': item['substance'],
+                          'address': item['address'],
+                          'photo': item['photo'],
+                          'type': item['type'],
+                        };
+                        List<Map<String, dynamic>> savedData = (storage.read<List<dynamic>>('savedSearchData') ?? [])
+                            .cast<Map<String, dynamic>>();
+                        bool isAlreadySaved = savedData.any((data) => data['id'] == itemData['id']);
+                        if (!isAlreadySaved) {
                           savedData.add(itemData);
+                          await storage.write('savedSearchData', savedData);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Ma\'lumot muvaffaqiyatli saqlandi!')),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Ma\'lumot avval saqlangan!')),
+                          );
                         }
-                        await storage.write('savedSearchData', savedData);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Ma\'lumotlar saqlandi!')),
-                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orange,
@@ -175,8 +181,7 @@ class _ListPageState extends State<ListPage> {
                           Text(" Saqlash", style: TextStyle(color: Colors.white)),
                         ],
                       ),
-                    )
-                    ,
+                    ),
                     ElevatedButton(
                       onPressed: () => navigateToListShowPage(item['id'].toString()),
                       style: ElevatedButton.styleFrom(
