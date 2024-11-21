@@ -17,27 +17,20 @@ class _SavePageState extends State<SavePage> {
     loadSavedItems();
   }
 
-  // Load saved items from GetStorage
   void loadSavedItems() async {
-    // Ensure GetStorage is initialized
     await GetStorage.init();
-
-    // Load saved data
     final savedData = GetStorage().read('saved_items') ?? [];
-
     if (savedData is List) {
       setState(() {
         savedItems = savedData;
       });
     } else {
-      // If data is not a List, handle appropriately
       setState(() {
         savedItems = [];
       });
     }
   }
 
-  // Delete item from GetStorage
   void deleteItem(Map<String, dynamic> itemToDelete) {
     List<dynamic> updatedList = savedItems.where((item) => item != itemToDelete).toList();
     GetStorage().write('saved_items', updatedList);
@@ -62,12 +55,10 @@ class _SavePageState extends State<SavePage> {
         itemCount: savedItems.length,
         itemBuilder: (context, index) {
           final item = savedItems[index];
-
           return Card(
             margin: const EdgeInsets.all(10),
             child: Column(
               children: [
-                // Full Image at the top
                 Image.network(
                   'https://cyberkarshi.uz/app/public/photo/${item['photo']}',
                   width: double.infinity,
@@ -81,13 +72,11 @@ class _SavePageState extends State<SavePage> {
                     subtitle: Text(item['adress'] ?? 'No Address'),
                   ),
                 ),
-                // Show and Delete Buttons
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Delete Button
                       ElevatedButton(
                         onPressed: () => deleteItem(item),
                         style: ElevatedButton.styleFrom(
@@ -101,7 +90,6 @@ class _SavePageState extends State<SavePage> {
                           style: TextStyle(color: Colors.white, fontSize: 12),
                         ),
                       ),
-                      // Show Button (customize this further)
                       ElevatedButton(
                         onPressed: () {
                           // Show details or any other action
