@@ -14,14 +14,11 @@ class ListPage extends StatefulWidget {
 class _ListPageState extends State<ListPage> {
   List<dynamic> searchResults = [];
   final GetStorage storage = GetStorage();
-
   @override
   void initState() {
     super.initState();
     fetchSearchData();
   }
-
-  // Fetch the search data from the API
   Future<void> fetchSearchData() async {
     final token = storage.read('token');
     final response = await http.get(
@@ -30,7 +27,6 @@ class _ListPageState extends State<ListPage> {
         'Authorization': 'Bearer $token',
       },
     );
-
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       setState(() {
@@ -40,16 +36,6 @@ class _ListPageState extends State<ListPage> {
       print('Failed to load data');
     }
   }
-
-  // Save the selected item to local storage
-  void saveDataToStorage(Map<String, dynamic> item) {
-    storage.write('saved_item', item);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Xotiraga saqlandi')),
-    );
-  }
-
-  // Navigate to the ListShowPage and pass the id
   void navigateToListShowPage(String id) {
     Navigator.push(
       context,
@@ -75,17 +61,16 @@ class _ListPageState extends State<ListPage> {
         padding: const EdgeInsets.all(10),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 1,
-          childAspectRatio: 9 / 16,
+          childAspectRatio: 2 / 3,
         ),
         itemCount: searchResults.length,
         itemBuilder: (context, index) {
           final item = searchResults[index];
-
           return Card(
+            margin: EdgeInsets.only(bottom: 20.0),
             elevation: 2,
             child: Column(
               children: [
-                // Image and overlay labels
                 Expanded(
                   flex: 1,
                   child: Stack(
@@ -137,7 +122,6 @@ class _ListPageState extends State<ListPage> {
                     ],
                   ),
                 ),
-                // Information section
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -152,25 +136,26 @@ class _ListPageState extends State<ListPage> {
                         ),
                       ),
                       _buildInfoRow('JK moddasi:', item['substance']),
-                      _buildInfoRow('QYJ:', item['qyj']),
-                      _buildInfoRow('Tug\'ilganun kun:', item['birthday']),
                       _buildInfoRow('Hudud:', item['adress']),
                     ],
                   ),
                 ),
-                // Save and View buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
-                      onPressed: () => saveDataToStorage(item),
+                      onPressed: () => (){},
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
+                        backgroundColor: Colors.orange,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
-                      child: const Icon(Icons.save, color: Colors.white),
+                      child: const Row(
+                          children: [
+                            Icon(Icons.save, color: Colors.white),
+                            Text(" Saqlash", style: TextStyle(color: Colors.white),),
+                          ],),
                     ),
                     ElevatedButton(
                       onPressed: () => navigateToListShowPage(item['id'].toString()),
@@ -180,7 +165,12 @@ class _ListPageState extends State<ListPage> {
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
-                      child: const Icon(Icons.remove_red_eye, color: Colors.white),
+                      child:const Row(
+                        children: [
+                          Icon(Icons.remove_red_eye, color: Colors.white),
+                          Text(" Ko'proq",style:  TextStyle(color: Colors.white),),
+                        ],
+                      ),
                     ),
                   ],
                 ),

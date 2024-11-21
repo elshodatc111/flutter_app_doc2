@@ -19,6 +19,7 @@ class _ListShowPageState extends State<ListShowPage> {
   final GetStorage storage = GetStorage();
   final _phoneController = TextEditingController();
   final _messageController = TextEditingController();
+  final _formKey = GlobalKey<FormState>(); // FormState uchun kalit
 
   @override
   void initState() {
@@ -28,6 +29,8 @@ class _ListShowPageState extends State<ListShowPage> {
 
   Future<void> fetchItemDetails() async {
     final token = storage.read('token');
+    final id = storage.read('id');
+    final wedget_id = widget.id;
     try {
       final response = await http.get(
         Uri.parse('https://cyberkarshi.uz/app/public/api/search_show/${widget.id}'),
@@ -50,102 +53,7 @@ class _ListShowPageState extends State<ListShowPage> {
       }
     } catch (e) {
       print('Tarmoq xatosi: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Tarmoq bilan muammo. Internetni tekshiring.')),
-      );
-    }
   }
-
-  void _showReportDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Qidruvdagi shaxs haqida'),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  controller: _phoneController,
-                  keyboardType: TextInputType.phone,
-                  decoration: const InputDecoration(
-                    labelText: 'Telefon raqam',
-                    prefixText: '+998 ',
-                  ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(13),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                TextField(
-                  controller: _messageController,
-                  maxLines: 3,
-                  decoration: const InputDecoration(
-                    labelText: 'Qidruvdagi shaxs haqida',
-                  ),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _sendReport,
-                  child: const Text('Xabarni yuborish'),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> _sendReport() async {
-    final phoneNumber = _phoneController.text.trim();
-    final message = _messageController.text.trim();
-    final token = storage.read('token');
-    final id = storage.read('id');
-    final searchId = widget.id;
-
-    if (phoneNumber.isEmpty || message.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Iltimos, barcha maydonlarni to\'ldiring.')),
-      );
-      return;
-    }
-
-    try {
-      final response = await http.post(
-        Uri.parse('https://cyberkarshi.uz/app/public/api/search_post'),
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({
-          'search_id': searchId,
-          'phone_number': phoneNumber,
-          'user_id': id,
-          'message': message,
-        }),
-      );
-
-      Navigator.pop(context); // Close the dialog
-
-      if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Xabar muvaffaqiyatli yuborildi!')),
-        );
-      } else {
-        print('Xato javob: ${response.body}');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Xatolik yuz berdi: ${response.statusCode}')),
-        );
-      }
-    } catch (e) {
-      print('POST yuborishda xatolik: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Tarmoq bilan muammo. Iltimos, qayta urinib ko\'ring.')),
-      );
-    }
   }
 
   @override
@@ -177,6 +85,22 @@ class _ListShowPageState extends State<ListShowPage> {
                     child: const Icon(Icons.broken_image, size: 50),
                   );
                 },
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  width: double.infinity,
+                  color: Colors.black.withOpacity(0.6),
+                  padding: const EdgeInsets.all(5.0),
+                  child: Text(
+                    itemDetails['type']=='1'?"Rasmiy qidruv":"Qidruv kutilmoqda",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
               Text(
@@ -220,11 +144,126 @@ class _ListShowPageState extends State<ListShowPage> {
                   Text(itemDetails['adress']?.toString() ?? '___'),
                 ],
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _showReportDialog,
-                child: const Text("Qidruvdagi shaxs haqida habar berish"),
-              ),
+              const SizedBox(height: 20),ElevatedButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Qidruvdagi shaxs haqida'),
+                        content: Form(
+                          key: _formKey, // FormState bilan ishlash
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min, // Shaklni kichikroq qilish
+                            children: [
+                              // Phone number field with validator
+                              TextFormField(
+                                controller: _phoneController,
+                                keyboardType: TextInputType.phone,
+                                decoration: const InputDecoration(
+                                  labelText: 'Telefon raqamingiz',
+                                  prefixText: '+998 ',
+                                  border: OutlineInputBorder(),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Telefon raqamini kiriting';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 10),
+                              // Message field
+                              TextFormField(
+                                controller: _messageController,
+                                maxLines: 3,
+                                decoration: const InputDecoration(
+                                  labelText: 'Qidruvdagi shaxs haqida',
+                                  border: OutlineInputBorder(),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Xabarni kiriting';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    String phone = _phoneController.text;
+                                    String message = _messageController.text;
+                                    final token = storage.read('token');
+                                    final userId = storage.read('id');
+                                    final searchId = widget.id;
+                                    final userIdString = userId.toString(); // Convert to String
+                                    final searchIdString = searchId.toString();
+
+                                    final body = {
+                                      'search_id': searchIdString, // Convert int to String
+                                      'user_id': userIdString,     // Convert int to String
+                                      'text': message,
+                                      'phone': phone,
+                                    };
+
+                                    try {
+                                      final response = await http.post(
+                                        Uri.parse('https://cyberkarshi.uz/app/public/api/search_post'),
+                                        headers: {
+                                          'Accept': 'application/json',
+                                          'Authorization': 'Bearer $token',
+                                        },
+                                        body: body,
+                                      );
+
+                                      if (response.statusCode == 200) {
+                                        _phoneController.clear();
+                                        _messageController.clear();
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(content: Text('Xabar muvaffaqiyatli yuborildi')),
+                                        );
+                                        Navigator.pop(context); // Close the dialog
+                                      } else {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(content: Text('Xabarni yuborishda xatolik: ${response.statusCode}')),
+                                        );
+                                      }
+                                    } catch (e) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(content: Text('Tarmoq xatosi: $e')),
+                                      );
+                                    }
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: const Size(double.infinity, 50),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: const Text('Xabarni yuborish'),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                  ),
+                  backgroundColor: Colors.red
+                ),
+                child: const Text(
+                  "Qidruvdagi shaxs haqida habar berish",
+                  style: TextStyle(color: Colors.white),
+                ),
+              )
+
             ],
           ),
         ),
