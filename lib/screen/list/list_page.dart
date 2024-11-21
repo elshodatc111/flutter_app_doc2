@@ -91,7 +91,7 @@ class _ListPageState extends State<ListPage> {
                         alignment: Alignment.topCenter,
                         child: Container(
                           width: double.infinity,
-                          color: Colors.red.withOpacity(0.6),
+                          color: Colors.orange.withOpacity(0.6),
                           padding: const EdgeInsets.all(5.0),
                           child: Text(
                             item['type'] == "1" ? "Rasmiy qidiruv" : "Qidruv kutilmoqda",
@@ -99,6 +99,7 @@ class _ListPageState extends State<ListPage> {
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
+                              fontSize: 20,
                             ),
                           ),
                         ),
@@ -107,7 +108,7 @@ class _ListPageState extends State<ListPage> {
                         alignment: Alignment.bottomCenter,
                         child: Container(
                           width: double.infinity,
-                          color: Colors.black.withOpacity(0.6),
+                          color: Colors.blue.withOpacity(0.9),
                           padding: const EdgeInsets.all(5.0),
                           child: Text(
                             item['name'],
@@ -115,6 +116,7 @@ class _ListPageState extends State<ListPage> {
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
+                              fontSize: 20,
                             ),
                           ),
                         ),
@@ -136,7 +138,7 @@ class _ListPageState extends State<ListPage> {
                         ),
                       ),
                       _buildInfoRow('JK moddasi:', item['substance']),
-                      _buildInfoRow('Hudud:', item['adress']),
+                      _buildInfoRow('Manzil:', item['adress']),
                     ],
                   ),
                 ),
@@ -210,14 +212,15 @@ class _ListPageState extends State<ListPage> {
   // Helper method to build info rows
   Widget _buildInfoRow(String label, dynamic value) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           label,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
         ),
         Text(
           '${value ?? '___'}',
-          style: const TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 12),
         ),
       ],
     );

@@ -3,19 +3,24 @@ import 'package:Search/screen/list/list_show_page.dart';
 import 'package:get_storage/get_storage.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
 class ChildPage extends StatefulWidget {
   const ChildPage({super.key});
+
   @override
   State<ChildPage> createState() => _ChildPageState();
 }
+
 class _ChildPageState extends State<ChildPage> {
   List<dynamic> searchResults = [];
   final GetStorage storage = GetStorage();
+
   @override
   void initState() {
     super.initState();
     fetchSearchData();
   }
+
   Future<void> fetchSearchData() async {
     final token = storage.read('token');
     final response = await http.get(
@@ -34,15 +39,15 @@ class _ChildPageState extends State<ChildPage> {
     }
   }
 
-  // Navigate to the ListShowPage and pass the id
   void navigateToListShowPage(String id) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ListShowPage(id: id), // Pass the id to ListShowPage
+        builder: (context) => ListShowPage(id: id),
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +59,12 @@ class _ChildPageState extends State<ChildPage> {
         backgroundColor: const Color(0xffECD593),
       ),
       body: searchResults.isEmpty
-          ? const Center(child: CircularProgressIndicator()) // Loading indicator
+          ? const Center(
+        child: Text(
+          'Yo\'qolgan shaxslar mavjud emas',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+      )
           : GridView.builder(
         padding: const EdgeInsets.all(10),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -66,7 +76,7 @@ class _ChildPageState extends State<ChildPage> {
           final item = searchResults[index];
           return Card(
             elevation: 2,
-            margin: EdgeInsets.only(bottom: 20.0),
+            margin: const EdgeInsets.only(bottom: 20.0),
             child: Column(
               children: [
                 Expanded(
@@ -89,7 +99,7 @@ class _ChildPageState extends State<ChildPage> {
                         alignment: Alignment.bottomCenter,
                         child: Container(
                           width: double.infinity,
-                          color: Colors.black.withOpacity(0.6),
+                          color: Colors.black.withOpacity(0.8),
                           padding: const EdgeInsets.all(5.0),
                           child: Text(
                             item['name'],
@@ -97,6 +107,7 @@ class _ChildPageState extends State<ChildPage> {
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
+                              fontSize: 16.0
                             ),
                           ),
                         ),
@@ -118,12 +129,24 @@ class _ChildPageState extends State<ChildPage> {
                         ),
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text("Tug'ilgan kuni: ",style: TextStyle(fontWeight: FontWeight.w900,fontSize: 16.0),),
-                          Text(item['birthday'],style: const TextStyle(fontWeight: FontWeight.w500,fontSize: 16.0),),
+                          const Text(
+                            "Tug'ilgan kuni: ",
+                            style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16.0),
+                          ),
+                          Text(
+                            item['birthday'],
+                            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0),
+                          ),
                         ],
                       ),
-                      Text(item['about'],style: const TextStyle(fontWeight: FontWeight.w500,fontSize: 16.0),),
+                      Center(
+                        child: Text(
+                          item['about'],
+                          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -134,5 +157,4 @@ class _ChildPageState extends State<ChildPage> {
       ),
     );
   }
-
 }

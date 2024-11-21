@@ -150,7 +150,7 @@ class _ListShowPageState extends State<ListShowPage> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: const Text('Qidruvdagi shaxs haqida'),
+                        title: const Text('Qidruvdagi shaxs haqida',style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.w700),textAlign: TextAlign.center,),
                         content: Form(
                           key: _formKey, // FormState bilan ishlash
                           child: Column(
@@ -247,6 +247,7 @@ class _ListShowPageState extends State<ListShowPage> {
                                 },
                                 style: ElevatedButton.styleFrom(
                                   minimumSize: const Size(double.infinity, 50),
+                                  backgroundColor: Colors.orange,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
@@ -260,7 +261,7 @@ class _ListShowPageState extends State<ListShowPage> {
                                     strokeWidth: 2.0,
                                   ),
                                 )
-                                    : const Text('Xabarni yuborish'),
+                                    : const Text('Xabarni yuborish',style: TextStyle(color: Colors.white),),
                               ),
 
                             ],

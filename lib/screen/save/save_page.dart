@@ -57,7 +57,7 @@ class _SavePageState extends State<SavePage> {
         backgroundColor: const Color(0xffECD593),
       ),
       body: savedItems.isEmpty
-          ? const Center(child: Text('Saqlanganlar mavjud emas'))
+          ? const Center(child: Text('Saqlanganlar mavjud emas',style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w700),))
           : ListView.builder(
         itemCount: savedItems.length,
         itemBuilder: (context, index) {
