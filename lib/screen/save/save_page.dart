@@ -1,25 +1,23 @@
+import 'package:Search/screen/list/list_show_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 
 class SavePage extends StatefulWidget {
   const SavePage({super.key});
-
   @override
   State<SavePage> createState() => _SavePageState();
 }
 
 class _SavePageState extends State<SavePage> {
   List<dynamic> savedItems = [];
-
   @override
   void initState() {
     super.initState();
     loadSavedItems();
   }
-
   void loadSavedItems() async {
     await GetStorage.init();
-    final savedData = GetStorage().read('saved_items') ?? [];
+    final savedData = GetStorage().read('savedSearchData') ?? [];
     if (savedData is List) {
       setState(() {
         savedItems = savedData;
@@ -33,7 +31,7 @@ class _SavePageState extends State<SavePage> {
 
   void deleteItem(Map<String, dynamic> itemToDelete) {
     List<dynamic> updatedList = savedItems.where((item) => item != itemToDelete).toList();
-    GetStorage().write('saved_items', updatedList);
+    GetStorage().write('savedSearchData', updatedList);
     setState(() {
       savedItems = updatedList;
     });
@@ -42,15 +40,24 @@ class _SavePageState extends State<SavePage> {
     );
   }
 
+  void navigateToListShowPage(String id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ListShowPage(id: id),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Saved Items'),
+        title: const Text('Saqlanganlar',style: TextStyle(color: Colors.white),),
         backgroundColor: const Color(0xffECD593),
       ),
       body: savedItems.isEmpty
-          ? const Center(child: Text('No saved items yet.'))
+          ? const Center(child: Text('Saqlanganlar mavjud emas'))
           : ListView.builder(
         itemCount: savedItems.length,
         itemBuilder: (context, index) {
@@ -68,8 +75,7 @@ class _SavePageState extends State<SavePage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
-                    title: Text(item['fio'] ?? 'No FIO'),
-                    subtitle: Text(item['adress'] ?? 'No Address'),
+                    title: Text(item['fio'] ?? 'No FIO', style: const TextStyle(color: Colors.black,fontWeight: FontWeight.w700,fontSize: 20),textAlign: TextAlign.center,),
                   ),
                 ),
                 Padding(
@@ -85,24 +91,26 @@ class _SavePageState extends State<SavePage> {
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
-                        child: const Text(
-                          'Delete',
-                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        child: const Row(
+                          children: [
+                            Icon(Icons.delete_forever_outlined,color: Colors.white,),
+                            Text(" O'chirish",style: TextStyle(color: Colors.white),)
+                          ],
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          // Show details or any other action
-                        },
+                        onPressed: ()=> navigateToListShowPage(item['id'].toString()),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
-                        child: const Text(
-                          'Show',
-                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        child: const Row(
+                          children: [
+                            Icon(Icons.remove_red_eye,color: Colors.white,),
+                            Text(" Batafsil",style: TextStyle(color: Colors.white),)
+                          ],
                         ),
                       ),
                     ],

@@ -15,9 +15,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   final List<Widget> _tabs = [
-    ListPage(),
-    SavePage(),
-    ChildPage(),
+    const ListPage(),
+    const ChildPage(),
+    const SavePage(),
     const ProfelPage()
   ];
   @override
@@ -45,15 +45,15 @@ class _HomePageState extends State<HomePage> {
            ),
           BottomNavigationBarItem(
             backgroundColor: Color(0xffEDD694),
-            icon: Icon(Icons.save),
-            label: 'Tanlangan',
-            activeIcon: Icon(Icons.save),
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: Color(0xffEDD694),
             icon: Icon(Icons.child_care),
             label: 'Yo\'qolganlar',
             activeIcon: Icon(Icons.child_care),
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Color(0xffEDD694),
+            icon: Icon(Icons.save),
+            label: 'Tanlangan',
+            activeIcon: Icon(Icons.save),
           ),
           BottomNavigationBarItem(
             backgroundColor: Color(0xffEDD694),

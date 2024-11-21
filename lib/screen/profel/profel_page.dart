@@ -15,75 +15,72 @@ class _ProfelPageState extends State<ProfelPage> {
 
   @override
   Widget build(BuildContext context) {
-    // GetStorage dan ma'lumotlarni o'qish
     final String fullName = storage.read('name') ?? 'Ismingiz yoq';
     final String idNumber = storage.read('number') ?? 'Ma\'lumot yoq';
 
-    return Container(
-      padding: const EdgeInsets.all(0.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(1),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profel',style: TextStyle(color: Colors.white),),
+        backgroundColor: const Color(0xffECD593),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: Get.width,
-            color: const Color(0xffECD593),
-            padding: const EdgeInsets.only(top: 30.0,left: 16,right: 16,bottom: 16),
-            child: const Text(
-              "Profel",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w800),
-            ),
-          ),
-          const SizedBox(height: 20),
-          // Foydalanuvchi ismini o'qish
-          Text(
-            fullName,
-            style: const TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8.0),
-          // ID raqamini o'qish
-          Text(
-            idNumber,
-            style: const TextStyle(
-              fontSize: 16.0,
-              color: Colors.grey,
-            ),
-          ),
-          const Spacer(), // Bo'sh joy tugmani pastga surish uchun
-          ElevatedButton(
-            onPressed: () {
-              // Chiqish tugmasi bosilganda
-              storage.erase(); // Barcha saqlangan ma'lumotlarni o'chirish
-              Get.offAll(() => const LoginPage()); // Login sahifasiga qaytarish
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
+      body: Center(
+        child: Container(
+          width: Get.width,
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
               ),
-            ),
-            child: const Text(
-              "Chiqish",
-              style: TextStyle(color: Colors.white),
-            ),
+            ],
           ),
-        ],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                fullName,
+                style: const TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8.0),
+              Text(
+                idNumber,
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  color: Colors.grey,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              const Divider(),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  storage.erase();
+                  Get.offAll(() => const LoginPage());
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red, // Background color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                child: const Text(
+                  "Chiqish",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

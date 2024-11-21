@@ -66,6 +66,7 @@ class _ChildPageState extends State<ChildPage> {
           final item = searchResults[index];
           return Card(
             elevation: 2,
+            margin: EdgeInsets.only(bottom: 20.0),
             child: Column(
               children: [
                 Expanded(

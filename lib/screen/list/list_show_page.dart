@@ -29,8 +29,6 @@ class _ListShowPageState extends State<ListShowPage> {
 
   Future<void> fetchItemDetails() async {
     final token = storage.read('token');
-    final id = storage.read('id');
-    final wedget_id = widget.id;
     try {
       final response = await http.get(
         Uri.parse('https://cyberkarshi.uz/app/public/api/search_show/${widget.id}'),
@@ -62,7 +60,7 @@ class _ListShowPageState extends State<ListShowPage> {
       appBar: AppBar(
         title: const Text(
           'Shaxsni ko\'rinish',
-          style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w700),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
         ),
         backgroundColor: const Color(0xffECD593),
       ),

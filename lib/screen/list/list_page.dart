@@ -51,7 +51,7 @@ class _ListPageState extends State<ListPage> {
       appBar: AppBar(
         title: const Text(
           'Qidruvdagi shaxslar',
-          style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w700),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
         ),
         backgroundColor: const Color(0xffECD593),
       ),
@@ -67,7 +67,7 @@ class _ListPageState extends State<ListPage> {
         itemBuilder: (context, index) {
           final item = searchResults[index];
           return Card(
-            margin: EdgeInsets.only(bottom: 20.0),
+            margin: const EdgeInsets.only(bottom: 20.0),
             elevation: 2,
             child: Column(
               children: [
@@ -144,7 +144,25 @@ class _ListPageState extends State<ListPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
-                      onPressed: () => (){},
+                      onPressed: () async {
+                        List<Map<String, dynamic>> savedData = [];
+                        for (var item in searchResults) {
+                          Map<String, dynamic> itemData = {
+                            'id': item['id'],
+                            'name': item['name'],
+                            'fio': item['fio'],
+                            'substance': item['substance'],
+                            'address': item['address'],
+                            'photo': item['photo'],
+                            'type': item['type'],
+                          };
+                          savedData.add(itemData);
+                        }
+                        await storage.write('savedSearchData', savedData);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Ma\'lumotlar saqlandi!')),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orange,
                         shape: RoundedRectangleBorder(
@@ -152,11 +170,13 @@ class _ListPageState extends State<ListPage> {
                         ),
                       ),
                       child: const Row(
-                          children: [
-                            Icon(Icons.save, color: Colors.white),
-                            Text(" Saqlash", style: TextStyle(color: Colors.white),),
-                          ],),
-                    ),
+                        children: [
+                          Icon(Icons.save, color: Colors.white),
+                          Text(" Saqlash", style: TextStyle(color: Colors.white)),
+                        ],
+                      ),
+                    )
+                    ,
                     ElevatedButton(
                       onPressed: () => navigateToListShowPage(item['id'].toString()),
                       style: ElevatedButton.styleFrom(
