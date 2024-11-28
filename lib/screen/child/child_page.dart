@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Search/screen/list/list_show_page.dart';
+import 'package:Qidruv/screen/list/list_show_page.dart';
 import 'package:get_storage/get_storage.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -69,7 +69,7 @@ class _ChildPageState extends State<ChildPage> {
         padding: const EdgeInsets.all(10),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 1,
-          childAspectRatio: 3 / 4,
+          childAspectRatio: 9 / 16,
         ),
         itemCount: searchResults.length,
         itemBuilder: (context, index) {

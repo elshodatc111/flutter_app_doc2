@@ -1,8 +1,8 @@
 
-import 'package:Search/screen/child/child_page.dart';
-import 'package:Search/screen/list/list_page.dart';
-import 'package:Search/screen/profel/profel_page.dart';
-import 'package:Search/screen/save/save_page.dart';
+import 'package:Qidruv/screen/child/child_page.dart';
+import 'package:Qidruv/screen/list/list_page.dart';
+import 'package:Qidruv/screen/profel/profel_page.dart';
+import 'package:Qidruv/screen/save/save_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -52,13 +52,13 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             backgroundColor: Color(0xffEDD694),
             icon: Icon(Icons.save),
-            label: 'Tanlangan',
+            label: 'Saqlanganlar',
             activeIcon: Icon(Icons.save),
           ),
           BottomNavigationBarItem(
             backgroundColor: Color(0xffEDD694),
             icon: Icon(Icons.person),
-            label: 'Profel',
+            label: 'Profil',
             activeIcon: Icon(Icons.person),
           ),
         ],

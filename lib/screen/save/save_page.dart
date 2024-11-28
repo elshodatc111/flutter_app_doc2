@@ -1,4 +1,4 @@
-import 'package:Search/screen/list/list_show_page.dart';
+import 'package:Qidruv/screen/list/list_show_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 

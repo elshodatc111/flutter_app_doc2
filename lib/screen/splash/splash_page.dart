@@ -1,5 +1,5 @@
-import 'package:Search/screen/home_page.dart';
-import 'package:Search/screen/login/login_page.dart';
+import 'package:Qidruv/screen/home_page.dart';
+import 'package:Qidruv/screen/login/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
