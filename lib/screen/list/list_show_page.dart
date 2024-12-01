@@ -33,7 +33,7 @@ class _ListShowPageState extends State<ListShowPage> {
     final token = storage.read('token');
     try {
       final response = await http.get(
-        Uri.parse('https://cyberkarshi.uz/app/public/api/search_show/${widget.id}'),
+        Uri.parse('https://qidruv.atko.tech/api/search_show/${widget.id}'),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -75,7 +75,7 @@ class _ListShowPageState extends State<ListShowPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.network(
-                'https://cyberkarshi.uz/app/public/photo/${itemDetails['photo']}',
+                'https://qidruv.atko.tech/photo/${itemDetails['photo']}',
                 width: double.infinity,
                 height: 500,
                 fit: BoxFit.cover,
@@ -94,6 +94,22 @@ class _ListShowPageState extends State<ListShowPage> {
                   padding: const EdgeInsets.all(5.0),
                   child: Text(
                     itemDetails['type']=='1'?"Rasmiy qidruv":"Qidruv kutilmoqda",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  width: double.infinity,
+                  color: Colors.orange.withOpacity(0.6),
+                  padding: const EdgeInsets.all(5.0),
+                  child: Text(
+                    itemDetails['name'],
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Colors.white,

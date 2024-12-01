@@ -24,7 +24,7 @@ class _ListPageState extends State<ListPage> {
   Future<void> fetchSearchData() async {
     final token = storage.read('token');
     final response = await http.get(
-      Uri.parse('https://cyberkarshi.uz/app/public/api/search'),
+      Uri.parse('https://qidruv.atko.tech/api/search'),
       headers: {
         'Authorization': 'Bearer $token',
       },
@@ -81,7 +81,7 @@ class _ListPageState extends State<ListPage> {
                       borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(16.0)),
                       child: Image.network(
-                        'https://cyberkarshi.uz/app/public/photo/${item['photo']}',
+                        'https://qidruv.atko.tech/photo/${item['photo']}',
                         width: double.infinity,
                         height: 200,
                         fit: BoxFit.cover,
@@ -123,6 +123,22 @@ class _ListPageState extends State<ListPage> {
                       ),
                     ),
                   ],
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.orange.withOpacity(0.6),
+                    padding: const EdgeInsets.all(5.0),
+                    child: Text(
+                      item['name'],
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),

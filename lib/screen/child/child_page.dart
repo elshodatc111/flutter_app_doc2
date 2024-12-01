@@ -24,7 +24,7 @@ class _ChildPageState extends State<ChildPage> {
   Future<void> fetchSearchData() async {
     final token = storage.read('token');
     final response = await http.get(
-      Uri.parse('https://cyberkarshi.uz/app/public/api/child'),
+      Uri.parse('https://qidruv.atko.tech/api/child'),
       headers: {
         'Authorization': 'Bearer $token',
       },
@@ -84,7 +84,7 @@ class _ChildPageState extends State<ChildPage> {
                   child: Stack(
                     children: [
                       Image.network(
-                        'https://cyberkarshi.uz/app/public/photo/${item['photo']}',
+                        'https://qidruv.atko.tech/photo/${item['photo']}',
                         width: double.infinity,
                         height: double.infinity,
                         fit: BoxFit.fill,

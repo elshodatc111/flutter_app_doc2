@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('https://cyberkarshi.uz/app/public/api/login'),
+        Uri.parse('https://qidruv.atko.tech/api/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'email': guvohnomaRaqami,
